@@ -1,13 +1,13 @@
 package edu.eci.arsw.myrestaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.eci.arsw.myrestaurant.beans.impl.BasicBillCalculator;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Order {
-
-
     private Map<String, Integer> orderAmountsMap;
 
     public Map<String, Integer> getOrderAmountsMap() {
@@ -20,8 +20,8 @@ public class Order {
     private int tableNumber;
 
     public Order() {
-    }    
-    
+    }
+
     public Order(int tableNumber) {
         orderAmountsMap = new ConcurrentHashMap<>();
         this.tableNumber = tableNumber;

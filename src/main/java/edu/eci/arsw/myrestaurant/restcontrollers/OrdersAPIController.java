@@ -29,12 +29,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.PathVariable;
+import edu.eci.arsw.myrestaurant.services.OrderServicesException;
+import edu.eci.arsw.myrestaurant.services.RestaurantOrderServices;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
  * @author hcadavid
  */
-public class OrdersAPIController {
 
-    
+@RestController
+@RequestMapping(value = "/orders")
+public class OrdersAPIController {
+    @Autowired
+    RestaurantOrderServices ros;
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> GetOrderHandler() {
+        try {
+            return new ResponseEntity<>(ros.getOrders(), HttpStatus.ACCEPTED);
+        } catch (OrderServicesException ex) {
+            Logger.getLogger(OrderServicesException.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("Error bla bla bla", HttpStatus.NOT_FOUND);
+        }
+    }
 }

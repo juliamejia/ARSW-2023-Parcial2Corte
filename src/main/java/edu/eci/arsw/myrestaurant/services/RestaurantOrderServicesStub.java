@@ -1,25 +1,34 @@
 package edu.eci.arsw.myrestaurant.services;
 
 
+import edu.eci.arsw.myrestaurant.beans.impl.BasicBillCalculator;
 import edu.eci.arsw.myrestaurant.model.Order;
 import edu.eci.arsw.myrestaurant.model.RestaurantProduct;
 import edu.eci.arsw.myrestaurant.beans.BillCalculator;
 import edu.eci.arsw.myrestaurant.model.ProductType;
+
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-
+@Component
+@Service
 public class RestaurantOrderServicesStub implements RestaurantOrderServices {
 
-    
+    @Autowired
     BillCalculator calc = null;
 
     public RestaurantOrderServicesStub() {
     }
 
+    @Autowired
     public void setBillCalculator(BillCalculator calc) {
         this.calc = calc;
+
     }
 
     @Override
@@ -80,19 +89,19 @@ public class RestaurantOrderServicesStub implements RestaurantOrderServices {
         }
     }
 
+
     private static final Map<String, RestaurantProduct> productsMap;
 
     private static final Map<Integer, Order> tableOrders;
-    
+
 
     static {
         productsMap = new ConcurrentHashMap<>();
-        tableOrders = new ConcurrentHashMap<>();        
+        tableOrders = new ConcurrentHashMap<>();
         productsMap.put("PIZZA", new RestaurantProduct("PIZZA", 10000, ProductType.DISH));
         productsMap.put("HOTDOG", new RestaurantProduct("HOTDOG", 3000, ProductType.DISH));
         productsMap.put("COKE", new RestaurantProduct("COKE", 1300, ProductType.DRINK));
         productsMap.put("HAMBURGER", new RestaurantProduct("HAMBURGER", 12300, ProductType.DISH));
-        productsMap.put("BEER", new RestaurantProduct("BEER", 2500, ProductType.DRINK));
 
         Order o = new Order(1);
         o.addDish("PIZZA", 3);
@@ -108,4 +117,8 @@ public class RestaurantOrderServicesStub implements RestaurantOrderServices {
         tableOrders.put(3, o2);
     }
 
+    @Override
+    public Collection<Order> getOrders() throws OrderServicesException{
+        return tableOrders.values();
+    }
 }
